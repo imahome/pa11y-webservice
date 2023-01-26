@@ -189,6 +189,7 @@ module.exports = function(app, callback) {
 						ignore: task.ignore,
 						actions: task.actions || [],
 						chromeLaunchConfig: app.config.chromeLaunchConfig || {},
+						browser: app.config.browser,
 						headers: task.headers || {},
 						log: {
 							debug: model.pa11yLog(task.id),
