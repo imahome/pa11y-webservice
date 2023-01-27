@@ -22,6 +22,7 @@
 const {grey} = require('kleur');
 const {ObjectID} = require('mongodb');
 const pa11y = require('pa11y');
+const puppeteer = require('puppeteer');
 
 // Task model
 module.exports = function(app, callback) {
@@ -146,9 +147,15 @@ module.exports = function(app, callback) {
 							return 0;
 						}
 						if (Array.isArray(task.annotations)) {
-							return model.collection.updateMany({_id: ObjectID(id)}, {$push: {annotations: annotation}});
+							return model.collection.updateMany(
+								{_id: ObjectID(id)},
+								{$push: {annotations: annotation}}
+							);
 						}
-						return model.collection.updateMany({_id: ObjectID(id)}, {$set: {annotations: [annotation]}});
+						return model.collection.updateMany(
+							{_id: ObjectID(id)},
+							{$set: {annotations: [annotation]}}
+						);
 
 					})
 					.catch(error => {
@@ -179,7 +186,9 @@ module.exports = function(app, callback) {
 
 			// Run a task by ID
 			runById: function(id) {
+				// eslint-disable-next-line complexity
 				return model.getById(id).then(async task => {
+					const browser = await puppeteer.connect({browserURL: app.config.browserUrl});
 					const pa11yOptions = {
 						standard: task.standard,
 						includeWarnings: true,
@@ -189,7 +198,7 @@ module.exports = function(app, callback) {
 						ignore: task.ignore,
 						actions: task.actions || [],
 						chromeLaunchConfig: app.config.chromeLaunchConfig || {},
-						browser: app.config.browser,
+						browser,
 						headers: task.headers || {},
 						log: {
 							debug: model.pa11yLog(task.id),
@@ -255,6 +264,7 @@ module.exports = function(app, callback) {
 				}
 				if (task.headers) {
 					if (typeof task.headers === 'string') {
+						// eslint-disable-next-line max-depth
 						try {
 							output.headers = JSON.parse(task.headers);
 						} catch (error) {
