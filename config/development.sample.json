@@ -8,5 +8,5 @@
 			"--no-sandbox"
 		]
 	},
-	"browser": ""
+	"browserUrl": ""
 }

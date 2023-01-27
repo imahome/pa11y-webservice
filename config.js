@@ -27,7 +27,7 @@ if (fs.existsSync(jsonPath)) {
 		cron: env('CRON', jsonConfig.cron),
 		chromeLaunchConfig: jsonConfig.chromeLaunchConfig || {},
 		numWorkers: jsonConfig.numWorkers || 2,
-		browser: env('BROWSER', jsonConfig.browser)
+		browserUrl: env('BROWSERURL', jsonConfig.browserUrl)
 	};
 } else {
 	module.exports = {
@@ -37,7 +37,7 @@ if (fs.existsSync(jsonPath)) {
 		cron: env('CRON', false),
 		chromeLaunchConfig: {},
 		numWorkers: Number(env('NUM_WORKERS', '2')),
-		browser: env('BROWSER', '')
+		browserUrl: env('BROWSERURL', '')
 	};
 }
 

@@ -4,5 +4,5 @@
 	"port": 3000,
 	"cron": "0 30 0 * * *",
 	"chromeLaunchConfig": {},
-	"browser": ""
+	"browserUrl": ""
 }
